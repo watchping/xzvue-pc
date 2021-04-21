@@ -2,13 +2,13 @@
  <header id="header" class="container mb-4">
     <nav class="navbar navbar-light">
       <a class="navbar-brand" href="/">
-        <img src="/img/header/logo.png" alt="">
+        <img src="img/header/logo.png" alt="">    <!--/img/header/logo.png-->
       </a>
       <div class="form-inline">
         <div class="input-group">
           <input type="text" class="form-control p-0" placeholder="请输入你要搜索的内容" aria-label="Recipient's username" aria-describedby="basic-addon2" v-model="kw" @keydown.13="search"/>
           <div class="input-group-append h-75" @click="search">
-            <img class="btn p-0" src="/img/header/search.png">
+            <img class="btn p-0" src="img/header/search.png">
           </div>
         </div>
       </div>
@@ -17,7 +17,7 @@
         <b class="p-1 text-muted" >|</b>
         <a class="p-1 text-muted" id="btnLogin" href="#">登录</a>
       </nav>
-      <!--<nav id="signin" class="my-2 my-md-0 mr-md-3 small">
+      <!-- <nav id="signin" class="my-2 my-md-0 mr-md-3 small">
         <a class="p-1" href="#" title="我的收藏">
           <img src="/img/header/care.png">
         </a>
@@ -31,7 +31,7 @@
         </a>
         <a class="p-1 text-muted" href="#">Welcome <span id="uname">dangdang</span></a>
         <a class="p-1 text-muted" id="btnSignout" href="javascript:;">注销</a>
-      </nav>-->
+      </nav> -->
     </nav>
     <ul class="nav nav-pills">
       <li class="nav-item">
@@ -50,7 +50,7 @@
 export default {
   data(){
     return {
-      kw:""
+      kw:"",      
     }
   },
   methods:{
