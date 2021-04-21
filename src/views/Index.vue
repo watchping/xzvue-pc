@@ -290,6 +290,7 @@ export default {
   },
   created(){
     console.log(`创建Index页面组件后...`);
+    console.log(process.env);
     getIndex().then(result=>{
       console.log(result.recommendedItems);   //处理：首页推荐
       var [p1,p2,p3]=result.recommendedItems;
