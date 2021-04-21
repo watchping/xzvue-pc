@@ -68,7 +68,7 @@
       <h3 class="pb-3">
         <nav class="navbar navbar-light border-bottom border-secondary pb-0 mb-2">
           <a class="navbar-brand" href="#">
-            <img src="/img/index/computer_icon.png" class="d-inline-block align-top" alt="">
+            <img src="img/index/computer_icon.png" class="d-inline-block align-top" alt="">
             最新上架 / 2F
           </a>
         </nav>
@@ -150,7 +150,7 @@
       <h3 class="pb-3">
         <nav class="navbar navbar-light border-bottom border-secondary pb-0 mb-2">
           <a class="navbar-brand" href="#">
-            <img src="/img/index/computer_icon.png" class="d-inline-block align-top" alt="">
+            <img src="img/index/computer_icon.png" class="d-inline-block align-top" alt="">
             热销单品 / 3F
           </a>
         </nav>
