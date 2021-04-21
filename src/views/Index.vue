@@ -6,7 +6,7 @@
       <h3 class="pb-3">
         <nav class="navbar navbar-light border-bottom border-secondary pb-0 mb-2">
           <a class="navbar-brand" href="#">
-            <img src="/img/index/computer_icon.png" class="d-inline-block align-top" alt="">
+            <img src="img/index/computer_icon.png" class="d-inline-block align-top" alt="">
             首页推荐 / 1F
           </a>
         </nav>
@@ -233,25 +233,25 @@
     <ul class="nav nav-pills nav-fill mb-3">
       <li class="nav-item">
         <a class="nav-link" href="#">
-          <img src="/img/footer/icon1.png">
+          <img src="img/footer/icon1.png">
           <h6 class="text-muted">品质保障</h6>
         </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#">
-          <img src="/img/footer/icon2.png">
+          <img src="img/footer/icon2.png">
           <h6 class="text-muted">私人订制</h6>
         </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#">
-          <img src="/img/footer/icon3.png">
+          <img src="img/footer/icon3.png">
           <h6 class="text-muted">学员特供</h6>
         </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#">
-          <img src="/img/footer/icon4.png">
+          <img src="img/footer/icon4.png">
           <h6 class="text-muted">专属特权</h6>
         </a>
       </li>
@@ -267,8 +267,8 @@
 
 </template>
 <script>
-import Carousel from "../components/index/Carousel"
-import {getIndex} from "../assets/js/apis/index.js"
+import Carousel from "@/components/index/Carousel"
+import {getIndex} from "@/assets/js/apis/index.js"
 export default {
   data(){
     return {
