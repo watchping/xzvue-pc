@@ -3,6 +3,9 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+
 //1. 引入全局组件.vue文件
 import MyHeader from "./components/MyHeader"
 //2. 将MyHeader组件对象变成了全局组件
@@ -13,6 +16,7 @@ Vue.component("my-header",MyHeader);
 // axios.defaults.baseURL = "http://115.159.160.93:8080";//="http://xzserver.applinzi.com"
 // Vue.prototype.axios=axios;
 
+Vue.use(ElementUI);
 
 Vue.config.productionTip = false
 

@@ -1,16 +1,16 @@
-import axios from "axios"
-import {baseURL} from "../config.js"
+
+import {axios} from "../config.js"
+
 function getIndex(){
     return new Promise(
-        function(resolve,reject){
-            axios.get(baseURL+"/index")
+        function(resolve,reject){   
+            axios.get("/index")
             .then(result=>{
                 resolve(result.data);
             });
         }
     )
 }
-
 export {
     getIndex
 }

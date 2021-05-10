@@ -12,11 +12,18 @@
           </div>
         </div>
       </div>
-      <nav id="signout" class="my-2 my-md-0 mr-md-3 small">
+      <nav id="signin" class="my-2 my-md-0 mr-md-3 small" v-if="uname===''">
         <a class="p-1 text-muted" href="register.html">注册</a>
         <b class="p-1 text-muted" >|</b>
-        <a class="p-1 text-muted" id="btnLogin" href="#">登录</a>
+        <!-- <a class="p-1 text-muted" id="btnLogin" href="#">登录</a> -->
+        <router-link class="p-1 text-muted" id="btnLogin" to="/login">登录</router-link>
       </nav>
+      <nav id="signout"   class="my-2 my-md-0 mr-md-3 small" v-else>
+        <span class="p-1 text-muted" >Welcome {{uname}}</span>
+        <b class="p-1 text-muted" >|</b>        
+        <a href="" class="p-1 text-muted" id="btnLogout" @click.prevent="logout">注销</a>
+      </nav>
+
       <!-- <nav id="signin" class="my-2 my-md-0 mr-md-3 small">
         <a class="p-1" href="#" title="我的收藏">
           <img src="/img/header/care.png">
@@ -47,24 +54,46 @@
   </header>
 </template>
 <script>
+import { Logout } from "@/assets/js/apis/user.js";
+import {mapActions, mapMutations, mapState} from "vuex";
 export default {
   data(){
     return {
-      kw:"",      
+      kw:"",  
+      //isLogin:false,   
+      //uname:"",      
     }
   },
+  computed:{
+     ...mapState(["uname"]),
+  },
+
   methods:{
+    ...mapActions(["logout"]),
+    ...mapMutations(["setUname"]),
     search(){
-      this.$router.push("/products/"+this.kw)
-    }
+      this.$router.push("/product/list/"+this.kw)
+    },    
   },
   created(){
     this.kw = this.$route.params.kw;
+    //this.uname =  localStorage.getItem('uname');
+    this.isLogin = this.uname=="" ? false : true;
+
+    //console.log(this.isLogin + "/" +this.uname );
+
   },
   watch:{
     $route(){
       this.kw = this.$route.params.kw;
     }
+  },
+
+  mounted(){
+    //尝试从浏览器的localStorage sessionStorage获取数据 属于浏览器的存储机制，不是网页存储的
+    let uname=localStorage.getItem("uname") || sessionStorage.getItem("uname");
+    console.log(uname);
+    this.setUname(uname||"");
   }
 }
 </script>

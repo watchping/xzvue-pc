@@ -1,41 +1,4 @@
 
-# 三.懒加载
-1.问题：单页面应用首屏加载速度极慢！
-2.原因：
-(1).Vue项目发布时，要用npm run build打包、压缩、编译代码为浏览器可以直接使用的传统的html,css和js
-演示npm run build
-dist目录没有vue文件了
-(2)默认情况下，npm run build会将整个项目中所有的js,打包在一个js文件中，将所有的css打包在一个css文件中，这2个文件体积会相当大！
-(3)所以，如果将来网页必须等着两个文件下载完才能使用，当然加载速度极慢！
-3.解决:懒加载
-(1).懒加载就是指用哪个页面，就只下载哪个页面的内容，不用的页面内容，暂时不下载或者暂缓下载。
-比如说：只看首页，就只看首页的js和首页的css，其他页面比如详情页和商品列表页面的js和css暂缓下载。用户何时需要看其他页面，再下载其他页面的内容。
-4.如何：
-(1)Vue脚手架默认的懒加载方式：分开打包，异步自动下载！
-Src/router/index.js中：
-//不要用import引入需要懒加载的页面
-routes:[
-	{path:"/",component:Index},//首页不需要懒加载
-	{
-		path:"/details/:lid",
-		component:()=>import(/* webpackChunkName:"details" */ "../views/Details.vue"),//临时引入需要的页面组件,单独打包当前页面组件的内容，并将其命名为details.js
-		props:true
-	}
-]
-结果：1)npm run build时，会将每个懒加载的页面单独打包为一个js文件，文件名就是webpackChunkName配置的文件名。
-2)当访问首页时，仅加载首页组件的内容，其余懒加载的组件内容，在后台异步悄悄下载，不影响首屏加载速度！
-3)问题：虽然分开打包，但不需要看的页面依然在后台悄悄下载，浪费流量。
-注意js文件引用时的参数prefetch
-
-(2)更懒得加载，课节约流量
-a.要在上一种情况的基础上再进行配置
-b.再vue脚手架项目的跟目录，新建一个文件:vue.config.js
-module.exports={
-	chainWebpack:config=>{
-		config.plugins.delete("prefetch") //删除页面引用js时的rel="prefetch"属性，禁止后台异步下载暂时不需要的其他页面组件——节约流量
-	}
-}
-c.结果：首屏加载时，完全不会加载懒加载的页面！而是当用户确实想跳转到懒加载的页面时，才临时下载加载页面的js文件——节约流量！
 
 练习一
 1.解压昨天发的xzvue_start_with_axios.zip文件到当前工作文件夹
@@ -169,3 +132,135 @@ this.axios.get("/index").then(result=>{//异步、延迟
  this.p1=result.data[0]
  ...
 }
+
+# 学子商城详情页放大镜效果
+参照购物网站中商品详情中商品细节的展示，例如京东 https://item.jd.com/100019549498.html
+详情页放大镜效果实现代码位置<div id="preview">
+底下横向列表的小图片加载
+	定义变量pics，页面上需要加载一组图片，所以data中需要有一个保存所有图片的数组。
+	在li元素用v-for指令，v-for="(p, i) of pics"
+	每次最多显示4张图片，设置宽度4*62，在ul父元素添加style="width: 248px; overflow:hidden;"，同时应该知道ul元素的宽度是动态的，宽度=pics.length * 62px。
+	如何实现小图片的移动？
+		更改ul元素的margin.left值，和左右方向按钮的点击次数有关，定义变量times,设置ul元素的margin.left值：'margin-left': -62*times +'px'。
+		左右方向按钮绑定事件，更改times的值。
+		左右方向按钮对象的使能状态是动态的，需要动态绑定，左边按钮设置:class="{disabled:times==0}"，右边按钮呢？:class="{disabled:times==pics.length-4}"
+实现鼠标进入小图片切换中图片，显示大图片
+	确认中图片，大图片的位置
+	实现切换图片
+		定义变量i,标识第i张图片，中图片pics[i].md，大图片pics[i].lg
+		鼠标经过小图片时更改i的值，@mouseover="changei(i)"
+		Vue能否使用DOM事件委托呢？答案是肯定的
+			li元素：	data-i="i"    
+			事件处理函数：this.i = e.target.dataset.i;
+	动态控制小遮罩层和大图片的显示隐藏
+		定义变量：hide
+		定义函数：toggle() {this.hide = !this.hide;},
+		添加大的遮罩层supper-mask，盖住中图片,其上绑定mouseover、mouseout、mousemove事件
+		实现修改小遮罩层mask的位置，需要动态绑定style,定义变量maskStyle: {left: "0",top: "0",},
+		根据变量maskStyle的值，动态修改大图片的显示位置，添加动态绑定的样式'background-position':`-${parseInt(maskStyle.left)*2}px -${parseInt(maskStyle.top)*2}px`
+
+# 懒加载
+1.问题：单页面应用首屏加载速度极慢！
+2.原因：
+(1).Vue项目发布时，要用npm run build打包、压缩、编译代码为浏览器可以直接使用的传统的html,css和js
+演示npm run build
+dist目录没有vue文件了
+(2)默认情况下，npm run build会将整个项目中所有的js,打包在一个js文件中，将所有的css打包在一个css文件中，这2个文件体积会相当大！
+(3)所以，如果将来网页必须等着两个文件下载完才能使用，当然加载速度极慢！
+3.解决:懒加载
+(1).懒加载就是指用哪个页面，就只下载哪个页面的内容，不用的页面内容，暂时不下载或者暂缓下载。
+比如说：只看首页，就只看首页的js和首页的css，其他页面比如详情页和商品列表页面的js和css暂缓下载。用户何时需要看其他页面，再下载其他页面的内容。
+4.如何：
+(1)Vue脚手架默认的懒加载方式：分开打包，异步自动下载！
+Src/router/index.js中：
+//不要用import引入需要懒加载的页面
+routes:[
+	{path:"/",component:Index},//首页不需要懒加载
+	{
+		path:"/details/:lid",
+		component:()=>import(/* webpackChunkName:"details" */ "../views/Details.vue"),//临时引入需要的页面组件,单独打包当前页面组件的内容，并将其命名为details.js
+		props:true
+	}
+]
+结果：1)npm run build时，会将每个懒加载的页面单独打包为一个js文件，文件名就是webpackChunkName配置的文件名。
+2)当访问首页时，仅加载首页组件的内容，其余懒加载的组件内容，在后台异步悄悄下载，不影响首屏加载速度！
+3)问题：虽然分开打包，但不需要看的页面依然在后台悄悄下载，浪费流量。
+注意js文件引用时的参数prefetch
+
+(2)更懒得加载，课节约流量
+a.要在上一种情况的基础上再进行配置
+b.再vue脚手架项目的跟目录，新建一个文件:vue.config.js
+module.exports={
+	chainWebpack:config=>{
+		config.plugins.delete("prefetch") //删除页面引用js时的rel="prefetch"属性，禁止后台异步下载暂时不需要的其他页面组件——节约流量
+	}
+}
+c.结果：首屏加载时，完全不会加载懒加载的页面！而是当用户确实想跳转到懒加载的页面时，才临时下载加载页面的js文件——节约流量！
+
+
+# 学子商城商品列表页面和按关键字搜索商品
+分析接口功能及用法
+GET /product/list
+支持分页和模糊查询，需要先登录
+在MyHeader组件中 按回车 点击按钮实现查找
+定义变量kw，输入框中双向绑定v-model，事件绑定@keydown.13="search"
+搜索按钮中绑定事件@click
+定义方法search(){this.$router.push("/product/list/"+this.kw)}
+	跳转到商品类别路由，定义路由{ path: "/product/list/:kw", props: true, component: Products }
+编辑Products.vue
+	接收路由参数 props: ["kw"],
+调试，可以正常跳转，但发现页面跳转后输入框内容为空了。在MyHeader组件中添加生命周期函数created(){
+    this.kw = this.$route.params.kw;}
+调试，刚才问题解决了，在URL地址栏更改或输入参数macbook i5,输入框没同步变化，怎么办？在MyHeader组件中添加观测函数
+watch:{
+    $route(){
+      this.kw = this.$route.params.kw;
+    }
+  },
+
+完善Products.vue
+	复习接口用法GET /product/list
+	定义变量{pno: 1,products: [],pcount: 0,}注意接口说明页码从1开始
+	定义函数load()调用axios从API取数据
+	加载商品列表数据
+	分析输入框的数据和Products.vue组件数据的关系，答案：没关系的，监视的是路由参数kw
+	组件生命周期函数
+	created() {
+    	this.load();
+  	}
+	监控路由参数
+	watch: {
+		kw() {
+		this.load();
+		},
+  	},
+	分页的实现
+	页数元素 
+		v-for="i of pcount"  
+	 	:class="{active:pno==i}"
+		 @click="load(i)"
+	上一页
+		使能 :class="{disabled:pno==1}"
+		事件@click="load(pno-1)"
+	下一页
+		使能:class="{disabled:pno==pcount}"
+		事件@click="load(pno+1)"
+	
+
+
+Element-UI
+https://element.eleme.cn/#/zh-CN
+
+npm 安装
+npm i element-ui -S
+
+完整引入
+在 main.js 中写入以下内容：
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+...
+Vue.use(ElementUI);
+
+Element Plus
+一套为开发者、设计师和产品经理准备的基于 Vue 3.0 的桌面端组件库
+https://element-plus.gitee.io/#/zh-CN

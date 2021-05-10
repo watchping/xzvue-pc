@@ -1,10 +1,12 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Index from "../views/Index.vue"
-import NotFound from "../views/NotFound.vue"
-import Products from "../views/Products.vue"
+import Vue from "vue";
+import VueRouter from "vue-router";
+import Index from "../views/Index.vue";
+import NotFound from "../views/NotFound.vue";
+import Products from "../views/Products.vue";
 
-Vue.use(VueRouter)
+import Login from "@/views/Login.vue";
+
+Vue.use(VueRouter);
 
 //   const routes = [
 //   {
@@ -25,12 +27,22 @@ Vue.use(VueRouter)
 
 const router = new VueRouter({
   //mode:'history',
-  routes:[
-      {path:"/",  name: 'Index',     component:  Index},
-      {path:"/product/detail/:lid", props: true, component:() => import(/* webpackChunkName: "details" */ '../views/Details.vue')},
-      {path:"/product/list/:kw",props: true, component:Products},
-      {path:"/*",component:NotFound},
-  ]
-})
+  routes: [
+    { path: "/", name: "Index", component: Index },
+    {
+      path: "/product/detail/:lid",
+      props: true,
+      component: () =>
+        import(/* webpackChunkName: "details" */ "../views/Details.vue"),
+    },
+    { path: "/product/list/:kw", props: true, component: Products },
+    
 
-export default router
+    { path: "/login", component: Login },
+
+
+    { path: "/*", component: NotFound },
+  ],
+});
+
+export default router;
